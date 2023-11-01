@@ -47,6 +47,8 @@ public class SlideManager : MonoBehaviour
 
     bool pressed = false;
 
+
+    StreamWriter writer;
     
     void Start()
     {
@@ -55,13 +57,18 @@ public class SlideManager : MonoBehaviour
         slide2.SetActive(false);
         slideResult.SetActive(false);
 
-        trialNumber = PlayerPrefs.GetInt("trial_no", 1);
+        trialNumber = 1;
         trialNo_display.text = "Trial " + trialNumber;
 
         participantNumber = PlayerPrefs.GetInt("participant_no", 1);
         participantNo_display.text = "Participant " + participantNumber;
 
+        slideNo = 0;
+
         randTime = RandomFloat(MIN_RAND_TIME, MAX_RAND_TIME);
+
+        CreateNewCSV();
+
     }
 
     // Update is called once per frame
@@ -92,30 +99,58 @@ public class SlideManager : MonoBehaviour
         }
     }
 
-    public void Restart()
-    {
-        PlayerPrefs.SetInt("participant_no", participantNumber);
-        PlayerPrefs.SetInt("trial_no", trialNumber + 1);
-        SceneManager.LoadScene(0);
+    public void ResetAll() {
+        PlayerPrefs.DeleteAll();
+        trialNumber = 1;
+        participantNumber = 1;
+        trialNo_display.text = "Trial " + trialNumber;
+        participantNo_display.text = "Participant " + participantNumber;
+        CreateNewCSV();
     }
 
-    public void ResetAndRestart() {
-        trialNumber = 1;
+    public void NextTrial()
+    {
+        trialNumber++;
         trialNo_display.text = "Trial " + trialNumber;
-        PlayerPrefs.SetInt("trial_no", trialNumber);
-        PlayerPrefs.SetInt("participant_no", participantNumber + 1);
 
-        CreateNewCSV();
+        slide0.SetActive(true);
+        slide1.SetActive(false);
+        slide2.SetActive(false);
+        slideResult.SetActive(false);
+
+        slideNo = 0;
+        
+        timePressed = 0;
+        randTime = RandomFloat(MIN_RAND_TIME, MAX_RAND_TIME);
+        slideAdvance = 0;
+
+        pressed = false;
+    }
+
+
+    // Moves onto the next participant
+    public void ResetAndRestart() {
+
+        writer.Close();
+
+        PlayerPrefs.SetInt("participant_no", participantNumber + 1);
 
         SceneManager.LoadScene(0);
     }
 
     public void CreateNewCSV() {
-        string filePath = "Results/Assets/Participant_" + participantNumber;
+        string filePath = "Assets\\Results\\Participant_" + participantNumber + ".csv";
  
-        StreamWriter writer = new StreamWriter(filePath);
+        writer = new StreamWriter(filePath);
  
-        writer.WriteLine("Trial,Time pressed, Random Time, Actual Adv Time");
+        // File.AppendAllText(filePath, "Trial,Time pressed, Random Time, Actual Adv Time");
+        writer.WriteLine("Trial,Time pressed,Random Time,Actual Adv Time");
+
+        // writer.Close();
+    }
+
+    public void WriteToCSV(string content) {
+        writer.WriteLine(content);
     }
 
     void ExecuteSpaceEvent()
@@ -124,17 +159,20 @@ public class SlideManager : MonoBehaviour
         {
             slideNo++;
         }
+
         if (slideNo == 1)
         {
             pressed = false;
             slide0.SetActive(false);
             slide1.SetActive(true);
             slide2.SetActive(false);
+            slide_end.SetActive(false);
         } else if (slideNo == 2)
         {
             slide0.SetActive(false);
             slide1.SetActive(false);
             slide2.SetActive(true);
+            slide_end.SetActive(false);
         }
     }
 
@@ -147,14 +185,21 @@ public class SlideManager : MonoBehaviour
             randomTime_result.text = Math.Round(randTime, 2).ToString();
             actualAdv_result.text = Math.Round(slideAdvance, 2).ToString();
 
+            string content = trialNumber.ToString() +
+                                ", " +
+                                (pressed ? Math.Round(timePressed, 2).ToString() : "Not pressed") +
+                                ", " +
+                                Math.Round(randTime, 2).ToString() +
+                                ", " +
+                                Math.Round(slideAdvance, 2).ToString();
+
+            Debug.Log(content);
+
+            WriteToCSV(content);
+
             CheckForEndOfExperiment();
 
-            // slide0.SetActive(false);
-            // slide1.SetActive(false);
-            // slide2.SetActive(false);
 
-            
-            // slideResult.SetActive(true);
         } else if (slideNo == 3) {
             ResetAndRestart();
         }
@@ -162,9 +207,14 @@ public class SlideManager : MonoBehaviour
 
     void CheckForEndOfExperiment() {
         if (trialNumber == NUM_TRIALS) {
+            slide0.SetActive(false);
+            slide1.SetActive(false);
+            slide2.SetActive(false);
             slide_end.SetActive(true);
+
+            slideNo = 3;
         } else {
-            Restart();
+            NextTrial();
         }
     }
 

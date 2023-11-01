@@ -2580,7 +2580,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 89134620}
         m_TargetAssemblyTypeName: SlideManager, Assembly-CSharp
-        m_MethodName: ResetAndRestart
+        m_MethodName: ResetAll
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
