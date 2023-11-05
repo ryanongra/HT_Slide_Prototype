@@ -27,11 +27,7 @@ public class SlideManager : MonoBehaviour
     public GameObject slide1;
     public GameObject slide2;
     public GameObject slide_end;
-    public GameObject slideResult;
-
-    public TextMeshProUGUI timePressed_result;
-    public TextMeshProUGUI randomTime_result;
-    public TextMeshProUGUI actualAdv_result;
+    public GameObject slide_qn;
 
     int trialNumber = 1;
     public TextMeshProUGUI trialNo_display;
@@ -47,23 +43,19 @@ public class SlideManager : MonoBehaviour
 
     bool pressed = false;
 
+    string curr_results;
 
     StreamWriter writer;
     
     void Start()
     {
-        slide0.SetActive(true);
-        slide1.SetActive(false);
-        slide2.SetActive(false);
-        slideResult.SetActive(false);
+        SetSlide(0);
 
         trialNumber = 1;
         trialNo_display.text = "Trial " + trialNumber;
 
         participantNumber = PlayerPrefs.GetInt("participant_no", 1);
         participantNo_display.text = "Participant " + participantNumber;
-
-        slideNo = 0;
 
         randTime = RandomFloat(MIN_RAND_TIME, MAX_RAND_TIME);
 
@@ -82,6 +74,10 @@ public class SlideManager : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.Return))
         {
             ExecuteReturnEvent();
+        }
+        if (Input.GetKeyDown(KeyCode.R))
+        {
+            ExecuteREvent();
         }
         if (slideNo == 1)
         {
@@ -113,12 +109,7 @@ public class SlideManager : MonoBehaviour
         trialNumber++;
         trialNo_display.text = "Trial " + trialNumber;
 
-        slide0.SetActive(true);
-        slide1.SetActive(false);
-        slide2.SetActive(false);
-        slideResult.SetActive(false);
-
-        slideNo = 0;
+        SetSlide(0);
         
         timePressed = 0;
         randTime = RandomFloat(MIN_RAND_TIME, MAX_RAND_TIME);
@@ -131,8 +122,6 @@ public class SlideManager : MonoBehaviour
     // Moves onto the next participant
     public void ResetAndRestart() {
 
-        writer.Close();
-
         PlayerPrefs.SetInt("participant_no", participantNumber + 1);
 
         SceneManager.LoadScene(0);
@@ -144,7 +133,7 @@ public class SlideManager : MonoBehaviour
         writer = new StreamWriter(filePath);
  
         // File.AppendAllText(filePath, "Trial,Time pressed, Random Time, Actual Adv Time");
-        writer.WriteLine("Trial,Time pressed,Random Time,Actual Adv Time");
+        writer.WriteLine("Trial,Time pressed,Random Time,Actual Adv Time,MCQ");
 
         // writer.Close();
     }
@@ -163,16 +152,10 @@ public class SlideManager : MonoBehaviour
         if (slideNo == 1)
         {
             pressed = false;
-            slide0.SetActive(false);
-            slide1.SetActive(true);
-            slide2.SetActive(false);
-            slide_end.SetActive(false);
+            SetSlide(1);
         } else if (slideNo == 2)
         {
-            slide0.SetActive(false);
-            slide1.SetActive(false);
-            slide2.SetActive(true);
-            slide_end.SetActive(false);
+            SetSlide(2);
         }
     }
 
@@ -180,10 +163,6 @@ public class SlideManager : MonoBehaviour
         if (slideNo == 2)
         {
             slideNo++;
-
-            timePressed_result.text = pressed ? Math.Round(timePressed, 2).ToString() : "Not pressed";
-            randomTime_result.text = Math.Round(randTime, 2).ToString();
-            actualAdv_result.text = Math.Round(slideAdvance, 2).ToString();
 
             string content = trialNumber.ToString() +
                                 ", " +
@@ -195,24 +174,52 @@ public class SlideManager : MonoBehaviour
 
             Debug.Log(content);
 
-            WriteToCSV(content);
+            SetSlide(4);
 
-            CheckForEndOfExperiment();
+            curr_results = content;
 
+        } 
+    }
 
-        } else if (slideNo == 3) {
+    void ExecuteREvent()
+    {
+        if (slideNo == 3)
+        {
             ResetAndRestart();
         }
     }
 
+    public void OnPress_A()
+    {
+        QnPress("A");
+    }
+
+    public void OnPress_B()
+    {
+        QnPress("B");
+    }
+
+    public void OnPress_C()
+    {
+        QnPress("C");
+    }
+
+    public void OnPress_D()
+    {
+        QnPress("D");
+    }
+
+    void QnPress(string opt)
+    {
+        curr_results += "," + opt;
+        WriteToCSV(curr_results);
+        CheckForEndOfExperiment();
+    } 
+
     void CheckForEndOfExperiment() {
         if (trialNumber == NUM_TRIALS) {
-            slide0.SetActive(false);
-            slide1.SetActive(false);
-            slide2.SetActive(false);
-            slide_end.SetActive(true);
-
-            slideNo = 3;
+            writer.Close();
+            SetSlide(3);
         } else {
             NextTrial();
         }
@@ -224,6 +231,26 @@ public class SlideManager : MonoBehaviour
         Random random = new Random();
         Debug.Log(random.NextDouble().ToString());
         return (float)(random.NextDouble() * (max - min) + min);
+    }
+
+    void SetSlide(int slideNo)
+    {
+        this.slideNo = slideNo;
+
+        slide0.SetActive(false);
+        slide1.SetActive(false);
+        slide2.SetActive(false);
+        slide_end.SetActive(false);
+        slide_qn.SetActive(false);
+
+        switch (slideNo)
+        {
+            case 0: slide0.SetActive(true); break;
+            case 1: slide1.SetActive(true); break;
+            case 2: slide2.SetActive(true); break;
+            case 3: slide_end.SetActive(true); break;
+            case 4: slide_qn.SetActive(true); break;
+        }
     }
 
 
