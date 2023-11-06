@@ -13,7 +13,7 @@ public class SlideManager : MonoBehaviour
     /// EXPERIMENTER VARIABLES
     //////////////////////////////////////////////
     // The number of trials for each experiment/participant
-    readonly int NUM_TRIALS = 5;
+    readonly int NUM_TRIALS = 25;
     // The minimum time before the slide might automatically advance
     readonly float MIN_RAND_TIME = 0.7f;
     // The maximum time the slide will take to automatically advance
