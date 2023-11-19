@@ -158,7 +158,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 376, y: 85.928}
+  m_AnchoredPosition: {x: 65, y: 43}
   m_SizeDelta: {x: 118.25, y: 37.8563}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &9613139
@@ -252,7 +252,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Navigation:
-    m_Mode: 3
+    m_Mode: 0
     m_WrapAround: 0
     m_SelectOnUp: {fileID: 0}
     m_SelectOnDown: {fileID: 0}
@@ -419,7 +419,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 520, y: 127}
+  m_AnchoredPosition: {x: -119, y: 86}
   m_SizeDelta: {x: 118.25, y: 37.8563}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &137912107
@@ -918,7 +918,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Navigation:
-    m_Mode: 3
+    m_Mode: 0
     m_WrapAround: 0
     m_SelectOnUp: {fileID: 0}
     m_SelectOnDown: {fileID: 0}
@@ -1034,7 +1034,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -40, y: 68}
+  m_AnchoredPosition: {x: 349, y: 68}
   m_SizeDelta: {x: 260, y: 2}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &423236065
@@ -1445,7 +1445,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: a) I advanced the slide when I pushed the button
+  m_text: a) The slide advanced when I pressed the button/foot pedal
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -1557,7 +1557,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 360, y: 127}
+  m_AnchoredPosition: {x: -279, y: 86}
   m_SizeDelta: {x: 118.25, y: 37.8563}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &665909173
@@ -2213,7 +2213,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Navigation:
-    m_Mode: 3
+    m_Mode: 0
     m_WrapAround: 0
     m_SelectOnUp: {fileID: 0}
     m_SelectOnDown: {fileID: 0}
@@ -2446,7 +2446,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &1272798579
 RectTransform:
   m_ObjectHideFlags: 0
@@ -2487,7 +2487,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 'c) The slide advanced just as I was about to push the button, as '
+  m_text: 'c) TODO: EDIT PHRASING OF OPTION'
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -2793,7 +2793,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: b) The slide advanced before I pushed the button
+  m_text: b) The slide advanced before I pressed the button/foot pedal
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -3021,7 +3021,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &1789077654
 RectTransform:
   m_ObjectHideFlags: 0
@@ -3200,7 +3200,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 436.41, y: 168.07184}
+  m_AnchoredPosition: {x: -475, y: 127}
   m_SizeDelta: {x: 118.25, y: 37.8563}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1850588789
@@ -3299,19 +3299,19 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 'This experiment involves a button-press task. Once you press "SPACEBAR",
-    the trial will begin and you will be directed to Slide 1. You are to then press
-    "SPACEBAR" again to advance from Slide 1 to Slide 2 anytime you like within 2
-    seconds after you see Slide 1.
+  m_text: 'This experiment involves a button-press task. Once you press the BUTTON/FOOT
+    PEDAL, the trial will begin and you will be directed to Slide 1. You are to then
+    press the BUTTON/FOOT PEDAL again to advance from Slide 1 to Slide 2 anytime
+    you like within 2 seconds after you see Slide 1.
 
 
-    After each trial, you will be asked an MCQ
-    question to determine your experience during the trial. Answer by hovering and
-    clicking the option that best reflects your experience.
+    After each trial, you
+    will be asked an MCQ question to determine your experience during the trial.
+    Answer by clicking the option that best reflects your experience with the cursor.
 
 
-    Press SPACEBAR
-    when you are ready...'
+    Press
+    the BUTTON/FOOT PEDAL when you are ready...'
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}

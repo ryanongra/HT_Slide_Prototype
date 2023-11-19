@@ -68,7 +68,6 @@ public class SlideManager : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.Space))
         {
-            pressed = true;
             ExecuteSpaceEvent();
         }
         if (Input.GetKeyDown(KeyCode.Return))
@@ -146,6 +145,7 @@ public class SlideManager : MonoBehaviour
     {
         if (slideNo < 2)
         {
+            pressed = true;
             slideNo++;
         }
 
@@ -171,8 +171,6 @@ public class SlideManager : MonoBehaviour
                                 Math.Round(randTime, 2).ToString() +
                                 ", " +
                                 Math.Round(slideAdvance, 2).ToString();
-
-            Debug.Log(content);
 
             SetSlide(4);
 
@@ -233,9 +231,10 @@ public class SlideManager : MonoBehaviour
         return (float)(random.NextDouble() * (max - min) + min);
     }
 
-    void SetSlide(int slideNo)
+    void SetSlide(int sNo)
     {
-        this.slideNo = slideNo;
+        Debug.Log("SET SLIDE " + sNo);
+        slideNo = sNo;
 
         slide0.SetActive(false);
         slide1.SetActive(false);
@@ -243,7 +242,7 @@ public class SlideManager : MonoBehaviour
         slide_end.SetActive(false);
         slide_qn.SetActive(false);
 
-        switch (slideNo)
+        switch (sNo)
         {
             case 0: slide0.SetActive(true); break;
             case 1: slide1.SetActive(true); break;
