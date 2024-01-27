@@ -18,6 +18,8 @@ public class SlideManager : MonoBehaviour
     readonly float MIN_RAND_TIME = 0.7f;
     // The maximum time the slide will take to automatically advance
     readonly float MAX_RAND_TIME = 2f;
+    // Rounding of timestamps (decimal places)
+    readonly int ROUND = 3;
 
 
     //////////////////////////////////////////////
@@ -46,7 +48,9 @@ public class SlideManager : MonoBehaviour
     string curr_results;
 
     StreamWriter writer;
-    
+
+
+    // Function called at the beginning of an experiment for every participant (not trial)
     void Start()
     {
         SetSlide(0);
@@ -64,6 +68,7 @@ public class SlideManager : MonoBehaviour
     }
 
     // Update is called once per frame
+    // Used for getting inputs 
     void Update()
     {
         if (Input.GetKeyDown(KeyCode.Space))
@@ -78,14 +83,26 @@ public class SlideManager : MonoBehaviour
         {
             ExecuteREvent();
         }
+
+
         if (slideNo == 1)
         {
             timePressed += Time.deltaTime;
             slideAdvance += Time.deltaTime;
 
             if (slideAdvance >= randTime)
-            {
-                ExecuteSpaceEvent();
+            {;
+                slideNo++;
+                if (slideNo == 1)
+                {
+                    SetSlide(1);
+                }
+                else if (slideNo == 2)
+                {
+                    SetSlide(2);
+                }
+
+                // ExecuteSpaceEvent();
             }
         }
         if (slideNo == 2 && !pressed)
@@ -94,15 +111,19 @@ public class SlideManager : MonoBehaviour
         }
     }
 
+    // Linked to Reset All button on slide 1 
     public void ResetAll() {
         PlayerPrefs.DeleteAll();
         trialNumber = 1;
         participantNumber = 1;
         trialNo_display.text = "Trial " + trialNumber;
         participantNo_display.text = "Participant " + participantNumber;
+        writer.Close();
         CreateNewCSV();
     }
 
+    // Called at the end of each trial (after the participant answers the MCQ question)
+    // to start the next trial
     public void NextTrial()
     {
         trialNumber++;
@@ -123,21 +144,21 @@ public class SlideManager : MonoBehaviour
 
         PlayerPrefs.SetInt("participant_no", participantNumber + 1);
 
-        SceneManager.LoadScene(0);
+        writer.Close();
+
+        SceneManager.LoadScene(0); // The whole expt is one scene. Calling 0 calls the same scene which resets it 
     }
 
+    // Called at the start of each participant to create the file to save the results
     public void CreateNewCSV() {
         string filePath = "Assets\\Results\\Participant_" + participantNumber + ".csv";
  
-        writer = new StreamWriter(filePath);
+        writer = new StreamWriter(filePath); // Writer saves the communication betw program csv so u can write into the file until u close it 
  
-        // File.AppendAllText(filePath, "Trial,Time pressed, Random Time, Actual Adv Time");
         writer.WriteLine("Trial,Time pressed,Random Time,Actual Adv Time,MCQ");
-
-        // writer.Close();
     }
 
-    public void WriteToCSV(string content) {
+    public void WriteToCSV(string content) { // Specifying that this function is taking in a string, and ur calling it "content" 
         writer.WriteLine(content);
     }
 
@@ -145,17 +166,20 @@ public class SlideManager : MonoBehaviour
     {
         if (slideNo < 2)
         {
-            pressed = true;
+            pressed = false;
             slideNo++;
         }
 
         if (slideNo == 1)
         {
-            pressed = false;
             SetSlide(1);
         } else if (slideNo == 2)
         {
+            pressed = true;
             SetSlide(2);
+        } else if (slideNo == 3)
+        {
+            pressed = true;
         }
     }
 
@@ -164,13 +188,14 @@ public class SlideManager : MonoBehaviour
         {
             slideNo++;
 
+            // Consolidates results into the format to be inserted into the results CSV.
             string content = trialNumber.ToString() +
                                 ", " +
-                                (pressed ? Math.Round(timePressed, 2).ToString() : "Not pressed") +
+                                (pressed ? Math.Round(timePressed, ROUND).ToString() : "Not pressed") + // ? = Asks if it's pressed. if Yes, 1st thing, No, 2nd option aft comma
                                 ", " +
-                                Math.Round(randTime, 2).ToString() +
+                                Math.Round(randTime, ROUND).ToString() +
                                 ", " +
-                                Math.Round(slideAdvance, 2).ToString();
+                                Math.Round(slideAdvance, ROUND).ToString();
 
             SetSlide(4);
 
@@ -209,7 +234,9 @@ public class SlideManager : MonoBehaviour
 
     void QnPress(string opt)
     {
-        curr_results += "," + opt;
+        curr_results += "," + opt; // The opts are ABCD, replaces "opt" w whichever is passed in when that specific function is called 
+
+        // A += B ===> A = A + B 
         WriteToCSV(curr_results);
         CheckForEndOfExperiment();
     } 
@@ -231,9 +258,16 @@ public class SlideManager : MonoBehaviour
         return (float)(random.NextDouble() * (max - min) + min);
     }
 
+
+    // Sets the display to the given slide number
+    // Slide 0: Instructions for Participants slide
+    // Slide 1: Slide to press button/foot pedal
+    // Slide 2: Slide after pressing
+    // Slide 3: Slide for the end of experiment
+    // Slide 4: Slide with MCQ question for what just happened
     void SetSlide(int sNo)
     {
-        Debug.Log("SET SLIDE " + sNo);
+        // Debug.Log("SET SLIDE " + sNo);
         slideNo = sNo;
 
         slide0.SetActive(false);
